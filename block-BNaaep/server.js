@@ -18,7 +18,7 @@ function handleRequest(req, res) {
   });
 
   req.on("end", () => {
-    //Web Pages
+    //Web Site Pages
     if (req.method === "GET" && pathname === "/") {
       fs.createReadStream(__dirname + "/index.html").pipe(res);
     } else if (req.method === "GET" && pathname === "/about") {
@@ -27,7 +27,7 @@ function handleRequest(req, res) {
       res.setHeader("Content-Type", "text/html");
       fs.createReadStream("./contact.html").pipe(res);
     }
-    //Stylesheets
+    //StyleSheets
     else if (
       (req.method === "GET" && pathname.split(".").pop() === "css") ||
       pathname.split(".").pop() === "scss"
@@ -68,16 +68,16 @@ function handleRequest(req, res) {
             return console.log("Unable to scan directory: " + err);
           }
           var length = files.length;
-          var count = 1;
-          files.forEach(function (file) {
+          // var count = 1;
+          files.forEach(function (file, index) {
             console.log(file);
             fs.readFile(userPath + file, (err, content) => {
               if (err) return console.log(err);
-              if (count < length) {
-                count++;
-                res.write(content);
-              } else {
+              if (index == length - 1) {
+                // count++;
                 return res.end(content);
+              } else {
+                res.write(content);
               }
             });
           });
